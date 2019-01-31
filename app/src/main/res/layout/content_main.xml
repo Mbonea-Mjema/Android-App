@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/login_background"
+
     android:visibility="visible"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
     <Button
-        android:id="@+id/SignInButton"
+        android:id="@+id/SignInB"
         android:layout_width="137dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -20,7 +20,7 @@
         android:text="@string/SignInButton" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -35,7 +35,7 @@
         android:text="@string/name" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"

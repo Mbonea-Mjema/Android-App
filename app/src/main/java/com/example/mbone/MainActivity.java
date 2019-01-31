@@ -1,15 +1,17 @@
 package com.example.mbone;
 
+
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,8 +19,63 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    public MainActivity() {
+
+        super();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        final TextView   name = findViewById(R.id.name);
+        final TextView password = findViewById(R.id.password);
+        Button signIn = findViewById(R.id.SignInB);
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+// Instantiate the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                //this is the url where you want to send the request
+                //TODO: replace with your own url to send request, as I am using my own localhost for this tutorial
+                String url = "http://192.168.1.7/AndroidVolley/androidVolley.php";
+
+                // Request a string response from the provided URL.
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // Display the response string.
+                                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    //adding parameters to the request
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("name", name.getText().toString());
+                        params.put("email", password.getText().toString());
+                        return params;
+                    }
+                };
+                // Add the request to the RequestQueue.
+                queue.add(stringRequest);
+            }
+        });
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,41 +84,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
-
-
-
-
-// Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://www.google.com";
-
-// Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-
-                        Toast.makeText(getApplicationContext(),"Hello Javatpoint",Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
 
 
     }
